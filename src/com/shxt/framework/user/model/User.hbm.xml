@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.shxt.framework.user.model">
+    <class name="User" table="web_sys_user">
+        <id name="user_id" type="integer">
+            <column name="user_id">
+                <comment>用户主键ID</comment>
+            </column>
+            <generator class="native"></generator>
+        </id>
+        
+        <property name="account"  type="string">
+            <column name="account" length="64" not-null="true" unique="true">
+                <comment>账号，不允许重复，不允许为空</comment>
+            </column>
+        </property>
+        
+        <property name="password" type="string" not-null="true">
+            <column name="password" length="64" >
+                <comment>密码，不允许为空</comment>
+            </column>
+        </property>
+        
+        <property name="user_name" type="string">
+            <column name="user_name" length="64" >
+                <comment>用户的姓名</comment>
+            </column>
+        </property>
+        
+        <property name="sex"  type="string">
+            <column name="sex" length="2">
+                <comment>男/女通过身份证号码自动获取</comment>
+            </column>
+        </property>
+        
+        <property name="id_card"  type="string">
+            <column name="id_card" length="18" >
+                <comment>身份证号码 18位</comment>
+            </column>
+        </property>
+        
+        <property name="birthday"  type="string">
+            <column name="birthday" length="10" >
+                <comment>出生日期-通过身份号码自动获取</comment>
+            </column>
+        </property>
+        
+        <property name="create_date"  type="date">
+            <column name="create_date" >
+                <comment>账号的创建日期</comment>
+            </column>
+        </property>
+        
+        <property name="create_name"  type="string">
+            <column name="create_name" length="64">
+                <comment>账号创建者</comment>
+            </column>
+        </property>
+        
+        <property name="account_status"  type="string">
+            <column name="account_status" length="1">
+                <comment>1:可用  2:禁用  3:彻底删除</comment>
+            </column>
+        </property>
+        
+        <property name="home_page"  type="string">
+            <column name="home_page" length="64">
+                <comment>右侧显示的首页界面</comment>
+            </column>
+        </property>
+        
+        <property name="del_flag"  type="string">
+            <column name="del_flag" length="1">
+                <comment>1:允许删除 2:不允许删除</comment>
+            </column>
+        </property>
+        
+        <property name="stop_date"  type="date">
+            <column name="stop_date" >
+                <comment>解禁日期</comment>
+            </column>
+        </property>
+        
+        <property name="email"  type="string">
+            <column name="email" length="64">
+                <comment>电子邮件</comment>
+            </column>
+        </property>
+        
+        <property name="telphone"  type="string">
+            <column name="telphone" length="64">
+                <comment>联系方式</comment>
+            </column>
+        </property>
+        
+        <property name="photo"  type="string">
+            <column name="photo" length="128">
+                <comment>头像</comment>
+            </column>
+        </property>
+        
+        <!-- 关联的对象 -->
+        <many-to-one name="role" class="com.shxt.framework.role.model.Role" column="fk_role_id" lazy="false"></many-to-one>
+        
+    </class>
+</hibernate-mapping>

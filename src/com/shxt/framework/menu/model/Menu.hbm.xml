@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.shxt.framework.menu.model">
+    <class name="Menu" table="web_sys_menu">
+        <id name="menu_id" column="menu_id" type="integer">
+            <generator class="native"></generator>
+        </id>
+        
+        <property name="menu_name" type="string">
+            <column name="menu_name" length="32">
+                <comment>菜单名称</comment>
+            </column>
+        </property>
+        
+        <property name="parent_id" type="string">
+            <column name="parent_id" length="20">
+                <comment>父节点ID</comment>
+            </column>
+        </property>
+        
+        <property name="url" type="string">
+            <column name="url" length="128">
+                <comment>菜单访问路径</comment>
+            </column>
+        </property>
+        
+        <property name="postion" type="string">
+            <column name="postion" length="10">
+                <comment>显示位置，默认未左侧</comment>
+            </column>
+        </property>
+        
+        <property name="target" type="string">
+            <column name="target" length="20">
+                <comment>目标位置</comment>
+            </column>
+        </property>
+        
+        <property name="icon" type="string">
+            <column name="icon" length="20">
+                <comment>节点图标</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

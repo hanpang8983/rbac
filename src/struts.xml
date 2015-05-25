@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <!-- Struts2预先给我们定义好一些常量信息 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />  
+    <!-- 关于后缀名的设置 -->
+    <constant name="struts.action.extension" value="action"></constant>
+    <!-- 取消样式，使用简单样式 -->
+    <constant name="struts.ui.theme" value="simple"></constant>
+     <!-- 关于上传操作的设置 -->
+    <constant name="struts.multipart.saveDir" value="D:\temp"></constant>
+    <constant name="struts.multipart.maxSize" value="20971520"></constant>
+    <!-- 配置Spring整合 -->
+    <constant name="struts.objectFactory" value="spring"></constant>
+    <package name="shxt-default" namespace="/" extends="json-default">
+        <!-- 定义一些全局的设置 -->
+        <global-results>
+            <result name="login">/jsp/login.jsp</result>
+            <result name="error">/jsp/error.jsp</result>
+            <result name="loginout" type="redirect">/jsp/login.jsp</result>
+        </global-results>
+        
+        <!-- 定义一个全局的异常 -->
+        <global-exception-mappings>
+            <!-- 异常信息 -->
+            <exception-mapping result="error" exception="java.lang.Exception"/>
+            <exception-mapping result="error" exception="com.shxt.base.exception.RabcException"/>
+        
+        </global-exception-mappings>
+    
+    </package>
+
+    <package name="system-default" namespace="/sys" extends="shxt-default">
+        <!-- 关于登录操作 -->
+        <action name="*LoginAction" class="loginAction" method="{1}">
+            <result name="dispatcher">/jsp/${toJsp}.jsp</result>
+            <result name="redirectAction" type="redirectAction">${toAction}</result>
+        </action>
+        
+        <!-- 关于用户操作 -->
+        <action name="*UserAction" class="userAction" method="{1}">
+            <result name="dispatcher">/jsp/${toJsp}.jsp</result>
+            <result name="json" type="json">
+                <param name="root">jsonResult</param>
+            </result>
+        </action>
+         <!-- 关于角色操作 -->
+        <action name="*RoleAction" class="roleAction" method="{1}">
+            <result name="dispatcher">/jsp/${toJsp}.jsp</result>
+        </action>
+        
+        <!-- 关于菜单操作 -->
+        <action name="*MenuAction" class="menuAction" method="{1}">
+            <result name="dispatcher">/jsp/${toJsp}.jsp</result>
+        </action>
+        
+        <!-- 关于字典的操作 
+        <action name="*DictAction" class="com.shxt.framework.dict.action.DictAction" method="{1}">
+            <result name="json" type="json">
+                <param name="root">jsonResult</param>
+            </result>
+        </action>
+       -->
+    </package>
+    
+
+   
+
+</struts>

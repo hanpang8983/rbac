@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.shxt.framework.role.model">
+    <class name="Role" table="web_sys_role">
+        <id name="role_id" type="integer">
+            <column name="role_id">
+                <comment>角色主键ID</comment>
+            </column>
+            <generator class="native"></generator>
+        </id>
+        
+        <property name="role_name"  type="string">
+            <column name="role_name" length="32" not-null="true" unique="true">
+                <comment>角色的名称，不允许重复</comment>
+            </column>
+        </property>
+        
+        <property name="role_status" type="string">
+            <column name="role_status" length="1" >
+                <comment>1代表是可用，2代表禁用，3代表删除</comment>
+            </column>
+        </property>
+        
+        <property name="role_desc" type="string">
+            <column name="role_desc" length="128" >
+                <comment>角色的描述，职能描述</comment>
+            </column>
+        </property>
+        
+        <property name="flag"  type="string">
+            <column name="flag" length="1">
+                <comment>1代表不锁定，2代表锁定，锁定之后不能进行禁用和删除操作</comment>
+            </column>
+        </property>
+        
+        <property name="photo"  type="string">
+            <column name="photo" length="64" >
+                <comment>角色的头像,如果头像不存在显示该图片</comment>
+            </column>
+        </property>
+        
+        <set name="menuSet" table="role_link_menu" lazy="false">
+            <key column="fk_role_id"/>
+            <many-to-many class="com.shxt.framework.menu.model.Menu" column="fk_menu_id"/>
+        </set>
+        
+        
+    </class>
+</hibernate-mapping>

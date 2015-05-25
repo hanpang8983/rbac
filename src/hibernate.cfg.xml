@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd" >
+<hibernate-configuration>
+<session-factory>
+	<!-- 配置数据库信息 开始 -->
+	<!--配置数据库的驱动程序，Hibernate在连接数据库时，需要用到数据库的驱动程序-->
+	<property name="hibernate.connection.driver_class">
+		com.mysql.jdbc.Driver
+	</property>
+	<!--连接数据库是用户名-->
+	<property name="hibernate.connection.username">root</property>
+	<!--连接数据库是密码-->
+	<property name="hibernate.connection.password">mysql</property>
+	<!--设置数据库的连接url:jdbc:mysql://127.0.0.1:端口号/数据库名-->
+	<property name="hibernate.connection.url">
+		jdbc:mysql://127.0.0.1:3308/ly24_rbac
+	</property>
+	<!--数据库连接池的大小-->
+	<property name="hibernate.connection.pool.size">5</property>
+	<!-- Hibernate使用的数据库方言,就是要用Hibernate连接那种类型的数据库服务器 -->
+	<property name="hibernate.dialect">
+		org.hibernate.dialect.MySQLDialect
+	</property>
+
+	<!--connection.useUnicode连接数据库时是否使用Unicode编码-->
+	<property name="hibernate.connection.useUnicode">true</property>
+	<!--
+		connection.characterEncoding连接数据库时数据的传输字符集编码方式，最好设置为UTF-8，用gb2312有的字符不全
+	-->
+	<property name="hibernate.connection.characterEncoding">
+		UTF-8
+	</property>
+
+	<!--
+		是否在后台显示Hibernate用到的SQL语句，
+		开发时设置为true:便于查找错误，程序运行时可以在控制台显示Hibernate的执行Sql语句。
+		项目部署后可以设置为false:提高运行效率
+	-->
+	<property name="hibernate.show_sql">true</property>
+	<property name="hibernate.format_sql">true</property>
+	<property name="hibernate.hbm2ddl.auto">update</property>
+
+	<!-- 配置结束 -->
+	<mapping resource="com/shxt/framework/user/model/User.hbm.xml" />
+	<mapping resource="com/shxt/framework/role/model/Role.hbm.xml" />
+	<mapping resource="com/shxt/framework/menu/model/Menu.hbm.xml" />
+
+
+
+
+</session-factory>
+</hibernate-configuration>

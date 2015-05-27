@@ -51,6 +51,10 @@
          <!-- 关于角色操作 -->
         <action name="*RoleAction" class="roleAction" method="{1}">
             <result name="dispatcher">/jsp/${toJsp}.jsp</result>
+            <result name="redirect" type="redirect">/jsp/${toJsp}.jsp</result>
+            <result name="json" type="json">
+                <param name="root">jsonResult</param>
+            </result>
         </action>
         
         <!-- 关于菜单操作 -->

@@ -201,5 +201,26 @@ public class BaseDaoImpl implements IBaseDao {
 	public Object querySQL(String sql, Class<?> clazz, boolean isHBM) {
 		return this.querySQL(sql, null, clazz, isHBM);
 	}
+	
+	public void updateBySQL(String sql, Object[] args) {
+		SQLQuery query = getSession().createSQLQuery(sql);
+		if (args != null && args.length > 0) {
+			for (int i = 0; i < args.length; i++) {
+				query.setParameter(i, args[i]);
+			}
+		}
+		query.executeUpdate();
+		
+	}
+
+	public void updateBySQL(String sql, Object arg) {
+		this.updateBySQL(sql, new Object[]{arg});
+		
+	}
+
+	public void updateBySQL(String sql) {
+		this.updateBySQL(sql,null);
+		
+	}
 
 }

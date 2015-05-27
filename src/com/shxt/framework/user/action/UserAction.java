@@ -14,7 +14,7 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionContext;
 import com.shxt.base.action.BaseAction;
 import com.shxt.base.dao.PageBean;
-import com.shxt.base.exception.RabcException;
+import com.shxt.base.exception.RbacException;
 import com.shxt.base.utils.PropertiesConfigHelper;
 import com.shxt.framework.role.model.Role;
 import com.shxt.framework.role.service.IRoleService;
@@ -72,7 +72,7 @@ public class UserAction extends BaseAction {
 			roleList = roleService.getStartRoleList();
 			
 			this.toJsp="user/add";
-		} catch (RabcException e) {
+		} catch (RbacException e) {
 			e.printStackTrace();
 		}
 	

@@ -34,18 +34,15 @@
     <!-- 关于功能测试代码 -->
     <script type="text/javascript">
         function toAddDialog(){
-            //测试artDialog是否成功
             //成功需要注意jquery的版本必须是1.7+以上
             var d = top.dialog({
-                id:"rightFrame",
                 width:700,
                 height:350,
                 title: '新建角色页面',
-                url:'RoleAddServlet.do',//可以是一个访问路径Action|Servlet等或者jsp页面资源
+                url:'sys/toAddRoleAction.action',//可以是一个访问路径Action|Servlet等或者jsp页面资源
                 onclose: function () {
                 if (this.returnValue=="success") {
-                   // alert(this.returnValue);
-                   //自动刷新
+                  
                    window.location.reload();
                 }
 
@@ -58,11 +55,10 @@
             //测试artDialog是否成功
             //成功需要注意jquery的版本必须是1.7+以上
             var d = top.dialog({
-                id:"rightFrame",
                 width:700,
                 height:550,
                 title: '更新角色页面',
-                url:'RoleUpdateServlet.do?role_id='+role_id,//可以是一个访问路径Action|Servlet等或者jsp页面资源
+                url:'sys/toUpdateRoleAction.action?role_id='+role_id,//可以是一个访问路径Action|Servlet等或者jsp页面资源
                 onclose: function () {
                 if (this.returnValue=="success") {
                    // alert(this.returnValue);
@@ -115,7 +111,24 @@
             });
             d.showModal();
         }
-
+        
+        
+        function toDelete(obj,role_id){
+        	if(window.confirm("您确定要注销该角色吗？很慎重")){
+        		//删除角色需要判断是否 flag允许， 需要删除前需要更新用户信息
+        		$.get("sys/deleteRoleAction.action",{role_id:role_id},function(data){
+        			
+        			if(data.flag=="success"){
+        				$(obj).parent().parent().fadeOut("slow",function(){
+        					$(this).remove();
+        				});
+        			}else{
+        				alert(data.message);
+        			}
+        			
+        		});
+        	}
+        }
 
     </script>
 
@@ -130,7 +143,6 @@
         <li>角色管理</li>
     </ul>
 </div>
-
 <div class="rightinfo">
 
     <div class="tools">
@@ -156,7 +168,7 @@
 							<a href="javascript:void(0)" onclick="toChangeStatus()">变更</a>
 						</p>
 						<p>
-							<a href="#">注销</a>&nbsp;&nbsp;&nbsp;&nbsp;
+							<a href="javascript:void(0)" onclick="toDelete(this,'${role.role_id}')">注销</a>&nbsp;&nbsp;&nbsp;&nbsp;
 							<a href="javascript:void(0)" onclick="toAuthorizeDialog('${role.role_id}')">授权</a>
 						</p>
 					</li>

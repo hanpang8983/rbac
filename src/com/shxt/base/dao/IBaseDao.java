@@ -2,6 +2,8 @@ package com.shxt.base.dao;
 
 import java.util.List;
 
+import org.hibernate.SQLQuery;
+
 public interface IBaseDao {
 	/**
 	 * 描述:保存对象
@@ -119,5 +121,8 @@ public interface IBaseDao {
 	
 	//public abstract PageBean findSQL(String sql, Object[] args, Class<?> clazz, PageBean pageBean,boolean isHBM);
 	
+	public void updateBySQL(String sql, Object[] args);
+	public void updateBySQL(String sql, Object arg);
+	public void updateBySQL(String sql);
 	
 }

@@ -21,7 +21,7 @@ public class Role implements Serializable {
 	/**角色的描述，职能描述*/
 	private String role_desc;
 	/**角色的头像,如果头像不存在显示该图片*/
-	private String photo = "default.png";
+	private String photo;
 	
 	
 	private Set<Menu> menuSet;

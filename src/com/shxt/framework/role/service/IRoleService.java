@@ -19,5 +19,11 @@ public interface IRoleService {
 	public Role getRoleById(Integer role_id);
 	
 	public void updateAuthorize(Integer role_id,Integer[] menuIds);
+	
+	public Long getCheckRoleName(String role_name);
+	
+	public void add(Role role);
+	public void update(Role role);
+	public void delete(Integer role_id);
 
 }

@@ -2,6 +2,7 @@ package com.shxt.framework.menu.service;
 
 import java.util.List;
 
+import com.shxt.framework.menu.dto.MenuDTO;
 import com.shxt.framework.menu.model.Menu;
 
 public interface IMenuService {
@@ -30,6 +31,10 @@ public interface IMenuService {
 	 * @return
 	 */
 	public List<Menu> getUnSelectedMenuListByRoleId(Integer role_id); 
+	
+	public List<MenuDTO> getMenuListAll();
+	
+	public void add(Menu menu);
 	
 	
 	

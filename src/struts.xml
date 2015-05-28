@@ -60,6 +60,10 @@
         <!-- 关于菜单操作 -->
         <action name="*MenuAction" class="menuAction" method="{1}">
             <result name="dispatcher">/jsp/${toJsp}.jsp</result>
+            <result name="redirect" type="redirect">/jsp/${toJsp}.jsp</result>
+            <result name="json" type="json">
+                <param name="root">jsonResult</param>
+            </result>
         </action>
         
         <!-- 关于字典的操作 

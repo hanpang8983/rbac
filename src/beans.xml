@@ -1,108 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:aop="http://www.springframework.org/schema/aop"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop.xsd">
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
 
+	<!-- 配置数据源信息，通过读取属性文件进行配置 -->
+	<context:property-placeholder location="classpath*:jdbc.properties" />
 	<!-- 配置数据源 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 		destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-        <property name="url" value="jdbc:mysql://127.0.0.1:3308/ly24_rbac"></property>
-        <property name="username" value="root"></property>
-        <property name="password" value="mysql"></property>
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="${jdbc.initialSize}" />
+		<!-- 最大空闲时，当经过一个高峰之后，连接池可以将一些用不到的连接释放，一直减少到maxIdle为止 -->
+		<property name="minIdle" value="${jdbc.minIdle}" />
+		<!-- 连接池的最大值 -->
+		<property name="maxActive" value="${jdbc.maxActive}" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="${jdbc.maxWait}" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}" />
+
+		<property name="validationQuery" value="${jdbc.validationQuery}" />
+		<property name="testWhileIdle" value="${jdbc.testWhileIdle}" />
+		<property name="testOnBorrow" value="${jdbc.testOnBorrow}" />
+		<property name="testOnReturn" value="${jdbc.testOnReturn}" />
 	</bean>
 	<!-- 为什么一定要取这个名字? -->
-	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-       <property name="dataSource" ref="dataSource"></property>
-       <property name="mappingLocations">
-            <list>
-                <value>classpath*:com/shxt/framework/**/model/*.hbm.xml</value>
-            </list>
-       </property>
-       <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-                <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
-            </props>
-       </property>
-    </bean>
-    <!-- 配置事务管理器Spring提供 -->
-    <bean id="transactionManager"
-            class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-      <property name="sessionFactory" ref="sessionFactory"></property>
-    </bean>
-    <!-- 
-        第一个* 代表返回任意的结果类型
-        第二个* 代表该包下的所有类
-        第三个* 代表该类下的所有方法
-        第四个.. 代表方法中有任意个参数
-     -->
-    <aop:config>
-        <aop:pointcut id="productServiceMethods"
-                expression="execution(* com.shxt.framework..service.*.*(..))"/>
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="productServiceMethods"/>
-    </aop:config>
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <!-- 定义规则 -->
-        <tx:attributes>
-            <!-- 所有的方法都是只读，没有事务的提交 -->
-            <tx:method name="*"  read-only="true"/>
-            <!-- 排除方法 -->
-            <tx:method name="add*" propagation="REQUIRED"/>
-            <tx:method name="insert*" propagation="REQUIRED"/>
-            <tx:method name="save*" propagation="REQUIRED"/>
-            <tx:method name="update*" propagation="REQUIRED"/>
-            <tx:method name="mod*" propagation="REQUIRED"/>
-            <tx:method name="change*" propagation="REQUIRED"/>
-            <tx:method name="del*" propagation="REQUIRED"/>
-            <tx:method name="remove*" propagation="REQUIRED"/>
-        </tx:attributes>
-    </tx:advice>
-    
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mappingLocations">
+			<list>
+				<value>classpath*:com/shxt/framework/**/model/*.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- 配置事务管理器Spring提供 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!--
+		第一个* 代表返回任意的结果类型 第二个* 代表该包下的所有类 第三个* 代表该类下的所有方法 第四个.. 代表方法中有任意个参数
+	-->
+	<aop:config>
+		<aop:pointcut id="productServiceMethods"
+			expression="execution(* com.shxt.framework..service.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="productServiceMethods" />
+	</aop:config>
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!-- 定义规则 -->
+		<tx:attributes>
+			<!-- 所有的方法都是只读，没有事务的提交 -->
+			<tx:method name="*" read-only="true" />
+			<!-- 排除方法 -->
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="mod*" propagation="REQUIRED" />
+			<tx:method name="change*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
 
-    <!-- 配置BaseDao -->
-    <bean id="baseDaoImpl" class="com.shxt.base.dao.BaseDaoImpl">
-        <property name="sessionFactory" ref="sessionFactory"></property>
-    </bean>
-    
-    <!-- 用户管理配置 -->
-    <bean id="userServiceImpl" class="com.shxt.framework.user.service.UserServiceImpl">
-        <property name="baseDao" ref="baseDaoImpl"/>
-    </bean>
-    <bean id="userAction" class="com.shxt.framework.user.action.UserAction" scope="prototype">
-        <property name="userService" ref="userServiceImpl"/>
-        <property name="roleService" ref="roleServiceImpl"/>
-    </bean>
-    
-    <!-- 角色管理配置 -->
-    <bean id="roleServiceImpl" class="com.shxt.framework.role.service.RoleServiceImpl">
-        <property name="baseDao" ref="baseDaoImpl"></property>
-    </bean>
-    <bean id="roleAction" class="com.shxt.framework.role.action.RoleAction" scope="prototype">
-        <property name="roleService" ref="roleServiceImpl"></property>
-        <property name="menuService" ref="menuServiceImpl"></property>
-    </bean>
-    
-    <!-- 菜单管理配置 -->
-    <bean id="menuServiceImpl" class="com.shxt.framework.menu.service.MenuServiceImpl">
-        <property name="baseDao" ref="baseDaoImpl"></property>
-    </bean>
-    <bean id="menuAction" class="com.shxt.framework.menu.action.MenuAction" scope="prototype">
-        <property name="menuService" ref="menuServiceImpl"></property>
-    </bean>
-    
-    <!-- 登录配置 -->
-    <bean id="loginAction" class="com.shxt.framework.login.action.LoginAction" scope="prototype">
-        <property name="userService" ref="userServiceImpl"></property>
-    </bean>
+
+	<!-- 配置BaseDao -->
+	<bean id="baseDaoImpl" class="com.shxt.base.dao.BaseDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<!-- 用户管理配置 -->
+	<bean id="userServiceImpl" class="com.shxt.framework.user.service.UserServiceImpl">
+		<property name="baseDao" ref="baseDaoImpl" />
+	</bean>
+	<bean id="userAction" class="com.shxt.framework.user.action.UserAction"
+		scope="prototype">
+		<property name="userService" ref="userServiceImpl" />
+		<property name="roleService" ref="roleServiceImpl" />
+	</bean>
+
+	<!-- 角色管理配置 -->
+	<bean id="roleServiceImpl" class="com.shxt.framework.role.service.RoleServiceImpl">
+		<property name="baseDao" ref="baseDaoImpl"></property>
+	</bean>
+	<bean id="roleAction" class="com.shxt.framework.role.action.RoleAction"
+		scope="prototype">
+		<property name="roleService" ref="roleServiceImpl"></property>
+		<property name="menuService" ref="menuServiceImpl"></property>
+	</bean>
+
+	<!-- 菜单管理配置 -->
+	<bean id="menuServiceImpl" class="com.shxt.framework.menu.service.MenuServiceImpl">
+		<property name="baseDao" ref="baseDaoImpl"></property>
+	</bean>
+	<bean id="menuAction" class="com.shxt.framework.menu.action.MenuAction"
+		scope="prototype">
+		<property name="menuService" ref="menuServiceImpl"></property>
+	</bean>
+
+	<!-- 登录配置 -->
+	<bean id="loginAction" class="com.shxt.framework.login.action.LoginAction"
+		scope="prototype">
+		<property name="userService" ref="userServiceImpl"></property>
+	</bean>
 </beans>

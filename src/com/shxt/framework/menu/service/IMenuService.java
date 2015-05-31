@@ -36,6 +36,11 @@ public interface IMenuService {
 	
 	public void add(Menu menu);
 	
+	public void deleteParent(Integer menu_id);
+	public void deleteChild(Integer menu_id);
+	
+	
+	
 	
 	
 }

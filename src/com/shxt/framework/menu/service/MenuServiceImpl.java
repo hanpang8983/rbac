@@ -74,7 +74,26 @@ public class MenuServiceImpl implements IMenuService {
 		}else{
 			this.baseDao.add(menu);
 		}
+	}
+	
+	public void deleteParent(Integer menu_id){
+		String hql = "select count(menu_id) from Menu where parent_id=?";
+		Long count = (Long) this.baseDao.query(hql, String.valueOf(menu_id));
+		if(count>0){
+			throw new RbacException("该节点下存在["+count+"]个子节点，请先删除子节点才可以操作!");
+		}else{
+			hql = "delete from Menu where menu_id=?";
+			this.baseDao.updateByHql(hql, menu_id);
+		}
+	}
+
+	public void deleteChild(Integer menuId) {
+		// 删除所有的中间表的子节点数据
+		String sql = "delete from role_link_menu where fk_menu_id=?";
+		this.baseDao.updateBySQL(sql, menuId);
 		
+		sql = "delete from web_sys_menu where menu_id=?";
+		this.baseDao.updateBySQL(sql, menuId);
 		
 	}
 

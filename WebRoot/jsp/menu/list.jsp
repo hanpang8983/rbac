@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title> | </title>
+    <title> 菜单管理 </title>
     <link href="<%=path %>/resource/admin/css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="<%=path %>/resource/admin/js/jquery.js"></script>
     <!-- 引入artDailog支持的库 -->
@@ -64,6 +64,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
         }
         
+        function deleteParentDialog(){
+        	var menu_id = $("input[name='id']:checked").val();
+        	if(menu_id){
+        		//使用Ajax进行删除操作
+        		if(window.confirm("您确定要删除该记录吗?")){
+        			$.get("sys/deleteParentMenuAction.action",{menu_id:menu_id},function(data){
+        				if(data.flag=="success"){
+        					var radio  = $("input[name='id']:checked");
+        					radio.parent().parent().hide("slow",function(){
+        						$(this).remove();
+        					});
+        				}else{
+        					alert(data.message);
+        					return false;
+        				}
+        			});
+        		}
+        	}else{
+        		alert("请选择一条记录进行删除操作");
+        		return ;
+        	}
+        }
+        
         /************************************************************/
         function toAddChildDialog(){
             //成功需要注意jquery的版本必须是1.7+以上
@@ -89,15 +112,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	               +'<a href="javascript:void(0)" onclick="deleteChildDialog(\''+menu_id+'\')">删除</a> &nbsp;&nbsp;|&nbsp;&nbsp;' 
         	               +'<a href="javascript:void(0)" onclick="toLookChildDialog(\''+menu_id+'\')">查看</a>';
         	               
-			var d = dialog({
+			var show_dialog = dialog({
+				id:"show_dialog",
 			    align: 'top',
 			    content: content,
 			    quickClose: true// 点击空白处快速关闭
 			});
-			d.show(obj);
+			show_dialog.show(obj);
 			
         }
-        
+         function deleteChildDialog(menu_id){
+
+              if(window.confirm("您确定要删除该记录吗?")){
+                    $.get("sys/deleteChildMenuAction.action",{menu_id:menu_id},function(data){
+                        if(data.flag=="success"){
+                           var id = "#child_"+menu_id;
+                           $(id).slideUp("slow",function(){
+                               $(this).remove();
+                           });
+                          dialog.get("show_dialog").remove();
+                        }else{
+                            alert(data.message);
+                            return false;
+                        }
+                    });
+                }else{
+                	dialog.get("show_dialog").remove();
+                }
+        }
         function toUpdateChildDialog(menu_id){
             //成功需要注意jquery的版本必须是1.7+以上
             var d = top.dialog({
@@ -117,24 +159,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             d.showModal();
         }
         
-        function deleteChildDialog(menu_id){
-            //成功需要注意jquery的版本必须是1.7+以上
-            var d = top.dialog({
-                width:700,
-                height:350,
-                title: '新建子节点页面',
-                url:'MenuChildAddServlet.do',//可以是一个访问路径Action|Servlet等或者jsp页面资源
-                onclose: function () {
-                if (this.returnValue=="success") {
-                   // alert(this.returnValue);
-                   //自动刷新
-                   window.location.reload();
-                }
-
-            }
-            });
-            d.showModal();
-        }
+       
         
         function toLookChildDialog(menu_id){
             //成功需要注意jquery的版本必须是1.7+以上
@@ -173,7 +198,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <ul class="toolbar">
                 <li class="click" onclick="toAddParentDialog()"><span><img src="<%=path %>/resource/admin/images/t01.png" /></span>新建父节点</li>
                 <li class="click" onclick="toUpdateParentDialog()"><span><img src="<%=path %>/resource/admin/images/t02.png" /></span>编辑</li>
-                <li><span><img src="<%=path %>/resource/admin/images/t03.png" /></span>删除</li>
+                <li class="click" onclick="deleteParentDialog()"><span><img src="<%=path %>/resource/admin/images/t03.png" /></span>删除</li>
                 <li><span><img src="<%=path %>/resource/admin/images/t04.png" /></span>统计</li>
             </ul>
             <ul class="toolbar1">
@@ -201,7 +226,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <td>${parent.icon}</td>
                 <td>
                      <c:forEach items="${parent.menuList}" var="child">
-                        <a href="javascript:void(0)" onclick="toChildShowWin(this,'${child.menu_id}')">${child.menu_name}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="javascript:void(0)" id="child_${child.menu_id}" onclick="toChildShowWin(this,'${child.menu_id}')">${child.menu_name}</a>&nbsp;&nbsp;|&nbsp;&nbsp;
                      </c:forEach>
                 </td>
             </tr>

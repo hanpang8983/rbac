@@ -26,8 +26,16 @@ public class MenuAction extends BaseAction {
 	
 	private Menu menu;
 	
+	private Integer menu_id;
 	
-	
+
+	public Integer getMenu_id() {
+		return menu_id;
+	}
+
+	public void setMenu_id(Integer menuId) {
+		menu_id = menuId;
+	}
 
 	public void setMenuService(IMenuService menuService) {
 		this.menuService = menuService;
@@ -55,9 +63,6 @@ public class MenuAction extends BaseAction {
 	public String list(){
 		try {
 			menuList = this.menuService.getMenuListAll();
-			for (MenuDTO menuDTO : menuList) {
-				System.out.println(menuDTO.getMenu_name()+"--子节点个数"+menuDTO.getMenuList().size());
-			}
 		} catch (RbacException e) {
 			e.printStackTrace();
 		}
@@ -82,6 +87,38 @@ public class MenuAction extends BaseAction {
 			map.put("message", e.getMessage());
 		}
 		this.jsonResult = map;
+		return JSON;
+	}
+	
+	public String deleteParent(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			this.menuService.deleteParent(menu_id);
+			map.put("flag", "success");
+			map.put("message", "删除父节成功，谢谢合作");
+		} catch (RbacException e) {
+			e.printStackTrace();
+			map.put("flag", "error");
+			map.put("message", e.getMessage());
+		}
+		this.jsonResult = map;
+		
+		return JSON;
+	}
+	
+	public String deleteChild(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			this.menuService.deleteChild(menu_id);
+			map.put("flag", "success");
+			map.put("message", "删除子节点成功，谢谢合作");
+		} catch (RbacException e) {
+			e.printStackTrace();
+			map.put("flag", "error");
+			map.put("message", e.getMessage());
+		}
+		this.jsonResult = map;
+		
 		return JSON;
 	}
 	

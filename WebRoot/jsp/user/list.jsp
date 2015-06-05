@@ -110,23 +110,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         
         function toLogOffDialog(){
         	//判断改用户选择
-            var radio = $("input[name='id']:checked");
+             var radio = $("input[name='ids']:checked");
         	
         	if(radio.val()){
-        		
-        		var session_user_id = '${session_user.user_id}';
-        		
-        		if(session_user_id==radio.val()){
-        			alert("当前用户正在使用，不能进行该操作");
-        			return false;
-        		}
-        		
-        		
         		var status = $.trim(radio.parent().parent().find("span").text());
+        		alert(radio.parent().parent().find("span").text());
 	            if(status=="可用"){
 	                status="<font color='red'>禁用</font>"
 	            }else{
-	                status="<font color='red'>可用</font>"
+	                status="<font color='green'>可用</font>"
 	            }
 	            var d = top.dialog({
 	                title: '提示信息',
@@ -141,14 +133,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                    	
 	                    	if(data.flag=="success"){
 	                    		alert(data.message);
-
-	                    		if($(status).text()=="可用"){
-	                    	      radio.parent().parent().find("span").css("color","green");
-	                    	      radio.parent().parent().find("span").html($(status).text());
-	                    		}else{
-	                    	      radio.parent().parent().find("span").css("color","red");
-	                    	      radio.parent().parent().find("span").html($(status).text());
-	                    		}
+								
+	                    		radio.parent().parent().find("span").html(status);
 	                    		
 	                    		return;
 	                    	}else{
@@ -166,10 +152,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		alert("请选中一条记录进行操作!");
                 return;
         	}
-        	
-        	
-        	
-        	
         }
     </script>
 

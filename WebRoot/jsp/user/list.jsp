@@ -108,7 +108,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
          }
         
-        function toLogOff(){
+        function toLogOffDialog(){
         	//判断改用户选择
             var radio = $("input[name='id']:checked");
         	
@@ -214,8 +214,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        <ul class="seachform1">
 		        <li style="cursor: pointer;" onclick="toAddDialog()"><span><img src="<%=path %>/resource/admin/images/t01.png" /></span>新建</li>
 		        <li style="cursor: pointer;" onclick="toUpdateDialog()"><span><img src="<%=path %>/resource/admin/images/t02.png" /></span>编辑</li>
-		        <li style="cursor: pointer;" onclick="toLogOff()"><span><img src="<%=path %>/resource/admin/images/t03.png" /></span>变更</li>
-		        <li style="cursor: pointer;"><span><img src="<%=path %>/resource/admin/images/t05.png" /></span>分配角色</li>
+		        <li style="cursor: pointer;" onclick="toLogOffDialog()"><span><img src="<%=path %>/resource/admin/images/t03.png" /></span>变更</li>
 	        </ul>
 		    
        </div>
@@ -241,7 +240,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <s:iterator value="pageBean.datas" var="user" status="st">
                 <tr>
 		            <td><input name="id" type="radio" value="<s:property value="#user.user_id"/>" /></td>
-		            <td><s:property value="#st.count"/></td>
+		            <td><s:property value="#st.count+((pageBean.pageNow-1)*pageBean.pageSize)"/></td>
 		            <td><s:property value="#user.user_name"/></td>
 		            <td><s:property value="#user.account"/></td>
 		            <td><s:property value="#user.id_card"/></td>

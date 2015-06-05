@@ -24,7 +24,7 @@
 				$("#menu_name").focus();
 				return false;
 			}
-			$.post("sys/addMenuAction.action", $("#menuForm").serialize(), function(data) {
+			$.post("sys/addParentMenuAction.action", $("#menuForm").serialize(), function(data) {
 				if (data.flag == "success") {
 					//关闭窗口，传递参数
 					var dialog = top.dialog.get(window);
@@ -73,7 +73,7 @@
 						<label>
 							&nbsp;
 						</label>
-						<input name="ddd" type="button" class="btn" value="确认保存"
+						<input  type="button" class="btn" value="确认保存"
 							onclick="toSub();" />
 					</li>
 				</ul>

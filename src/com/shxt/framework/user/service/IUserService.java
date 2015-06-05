@@ -1,6 +1,9 @@
 package com.shxt.framework.user.service;
 
+import java.util.List;
+
 import com.shxt.base.dao.PageBean;
+import com.shxt.base.model.CharDatas;
 import com.shxt.framework.user.model.User;
 import com.shxt.framework.user.query.UserQuery;
 
@@ -12,4 +15,6 @@ public interface IUserService {
 	public void update(User user);
 	public User getUserById(Integer user_id);
 	public void updateStatus(Integer user_id);
+	
+	public List<CharDatas> getCharDatas();
 }

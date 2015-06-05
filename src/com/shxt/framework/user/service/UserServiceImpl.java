@@ -1,8 +1,11 @@
 package com.shxt.framework.user.service;
 
+import java.util.List;
+
 import com.shxt.base.dao.BaseDaoImpl;
 import com.shxt.base.dao.IBaseDao;
 import com.shxt.base.dao.PageBean;
+import com.shxt.base.model.CharDatas;
 import com.shxt.framework.user.model.User;
 import com.shxt.framework.user.query.UserQuery;
 
@@ -76,6 +79,12 @@ public class UserServiceImpl implements IUserService {
 			user.setAccount_status("1");
 		}
 		this.baseDao.update(user);
+	}
+	
+	public List<CharDatas> getCharDatas(){
+		String sql = "select IFNULL(r.role_name,'无角色人员') label,count(u.user_id) value  from web_sys_user u LEFT JOIN web_sys_role r on u.fk_role_id=r.role_id group by r.role_name";
+		
+		return (List<CharDatas>) this.baseDao.listSQL(sql, CharDatas.class, false);
 	}
 
 }

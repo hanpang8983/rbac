@@ -6,6 +6,7 @@ import com.shxt.framework.menu.dto.MenuDTO;
 import com.shxt.framework.menu.model.Menu;
 
 public interface IMenuService {
+	public List<Menu> getLeftParentAllList();
 	/**
 	 * 通过角色获取该角色下对应的菜单信息
 	 * @param role_id
@@ -34,10 +35,16 @@ public interface IMenuService {
 	
 	public List<MenuDTO> getMenuListAll();
 	
-	public void add(Menu menu);
+	public void addParent(Menu menu);
+	public void updateParent(Menu menu);
 	
 	public void deleteParent(Integer menu_id);
 	public void deleteChild(Integer menu_id);
+	
+	public Menu load(Integer menu_id);
+	
+	public void addChild(Menu menu);
+	public void updateChild(Menu menu);
 	
 	
 	

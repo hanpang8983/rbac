@@ -48,9 +48,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 //成功需要注意jquery的版本必须是1.7+以上
                 var d = top.dialog({
                     width:700,
-                    height:350,
-                    title: '新建父节点页面',
-                    url:'MenuParentUpdateServlet.do?menu_id='+menu_id,//可以是一个访问路径Action|Servlet等或者jsp页面资源
+                    height:250,
+                    title: '编辑菜单信息',
+                    url:'sys/toUpdateParentMenuAction.action?menu_id='+menu_id,//可以是一个访问路径Action|Servlet等或者jsp页面资源
                     onclose: function () {
                     if (this.returnValue=="success") {
                        // alert(this.returnValue);
@@ -92,9 +92,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             //成功需要注意jquery的版本必须是1.7+以上
             var d = top.dialog({
                 width:700,
-                height:350,
+                height:250,
                 title: '新建子节点页面',
-                url:'MenuChildAddServlet.do',//可以是一个访问路径Action|Servlet等或者jsp页面资源
+                url:'sys/toAddChildMenuAction.action',//可以是一个访问路径Action|Servlet等或者jsp页面资源
                 onclose: function () {
                 if (this.returnValue=="success") {
                    // alert(this.returnValue);
@@ -122,8 +122,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			
         }
          function deleteChildDialog(menu_id){
-
-              if(window.confirm("您确定要删除该记录吗?")){
+              if(window.confirm("您确定删除该菜单信息吗?")){
                     $.get("sys/deleteChildMenuAction.action",{menu_id:menu_id},function(data){
                         if(data.flag=="success"){
                            var id = "#child_"+menu_id;
@@ -144,9 +143,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             //成功需要注意jquery的版本必须是1.7+以上
             var d = top.dialog({
                 width:700,
-                height:350,
-                title: '新建子节点页面',
-                url:'MenuChildAddServlet.do',//可以是一个访问路径Action|Servlet等或者jsp页面资源
+                height:250,
+                title: '编辑子节点页面',
+                url:'sys/toUpdateChildMenuAction.action?menu_id='+menu_id,//可以是一个访问路径Action|Servlet等或者jsp页面资源
                 onclose: function () {
                 if (this.returnValue=="success") {
                    // alert(this.returnValue);
@@ -164,10 +163,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         function toLookChildDialog(menu_id){
             //成功需要注意jquery的版本必须是1.7+以上
             var d = top.dialog({
-                width:700,
-                height:350,
-                title: '新建子节点页面',
-                url:'MenuChildAddServlet.do',//可以是一个访问路径Action|Servlet等或者jsp页面资源
+                width:400,
+                height:150,
+                title: '节点详细页面',
+                url:'sys/lookChildMenuAction.action?menu_id='+menu_id,//可以是一个访问路径Action|Servlet等或者jsp页面资源
                 onclose: function () {
                 if (this.returnValue=="success") {
                    // alert(this.returnValue);
@@ -196,13 +195,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
         <div class="tools">
             <ul class="toolbar">
-                <li class="click" onclick="toAddParentDialog()"><span><img src="<%=path %>/resource/admin/images/t01.png" /></span>新建父节点</li>
-                <li class="click" onclick="toUpdateParentDialog()"><span><img src="<%=path %>/resource/admin/images/t02.png" /></span>编辑</li>
-                <li class="click" onclick="deleteParentDialog()"><span><img src="<%=path %>/resource/admin/images/t03.png" /></span>删除</li>
-                <li><span><img src="<%=path %>/resource/admin/images/t04.png" /></span>统计</li>
+                <li class="click" onclick="toAddParentDialog()" style="cursor: pointer;"><span><img src="<%=path %>/resource/admin/images/t01.png" /></span>新建父节点</li>
+                <li class="click" onclick="toUpdateParentDialog()" style="cursor: pointer;"><span><img src="<%=path %>/resource/admin/images/t02.png" /></span>编辑</li>
+                <li class="click" onclick="deleteParentDialog()" style="cursor: pointer;"><span><img src="<%=path %>/resource/admin/images/t03.png" /></span>删除</li>
             </ul>
             <ul class="toolbar1">
-               <li onclick="toAddChildDialog()"><span><img src="<%=path %>/resource/admin/images/t01.png" /></span>添加子菜单</li>
+               <li class="click" onclick="toAddChildDialog()"  style="cursor: pointer;"><span><img src="<%=path %>/resource/admin/images/t01.png" /></span>添加子菜单</li>
             </ul>
         </div>
     

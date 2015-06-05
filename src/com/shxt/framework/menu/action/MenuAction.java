@@ -72,16 +72,38 @@ public class MenuAction extends BaseAction {
 	
 	public String toAddParent(){
 		
-		this.toJsp = "menu/add";
+		this.toJsp = "menu/add_parent";
 		return REDIRECT;
 	}
 	
-	public String add(){
+	public String addParent(){
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			this.menuService.add(menu);
+			this.menuService.addParent(menu);
 			map.put("flag", "success");
 			map.put("message", "添加父节成功，谢谢合作");
+		} catch (RbacException e) {
+			map.put("flag", "error");
+			map.put("message", e.getMessage());
+		}
+		this.jsonResult = map;
+		return JSON;
+	}
+	
+	public String toUpdateParent(){
+		
+		this.menu = this.menuService.load(menu_id);
+		
+		this.toJsp = "menu/update_parent";
+		return DISPATCHER;
+	}
+	
+	public String updateParent(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			this.menuService.updateParent(menu);
+			map.put("flag", "success");
+			map.put("message", "更新父节成功，谢谢合作");
 		} catch (RbacException e) {
 			map.put("flag", "error");
 			map.put("message", e.getMessage());
@@ -106,6 +128,56 @@ public class MenuAction extends BaseAction {
 		return JSON;
 	}
 	
+	
+	public String toAddChild(){
+		//需要左侧的列表
+		this.parentNodeList = this.menuService.getLeftParentAllList();
+		
+		this.toJsp = "menu/add_child";
+		return DISPATCHER;
+	}
+	
+	public String addChild(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			this.menuService.addChild(menu);
+			map.put("flag", "success");
+			map.put("message", "添加子菜单成功，谢谢合作");
+		} catch (RbacException e) {
+			map.put("flag", "error");
+			map.put("message", e.getMessage());
+		}
+		this.jsonResult = map;
+		return JSON;
+	}
+	
+	public String toUpdateChild(){
+		
+		//需要左侧的列表
+		this.parentNodeList = this.menuService.getLeftParentAllList();
+		
+		this.menu = this.menuService.load(menu_id);
+		
+		this.toJsp = "menu/update_child";
+		return DISPATCHER;
+	}
+	
+	public String updateChild(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			this.menuService.updateChild(menu);
+			map.put("flag", "success");
+			map.put("message", "更新子菜单信息成功，谢谢合作");
+		} catch (RbacException e) {
+			map.put("flag", "error");
+			map.put("message", e.getMessage());
+		}
+		this.jsonResult = map;
+		return JSON;
+	}
+	
+	
+	
 	public String deleteChild(){
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
@@ -121,6 +193,15 @@ public class MenuAction extends BaseAction {
 		
 		return JSON;
 	}
+	
+	public String lookChild(){
+		
+		this.menu = this.menuService.load(menu_id);
+		
+		this.toJsp = "menu/detail_child";
+		return DISPATCHER;
+	}
+	
 	
 	
 

@@ -208,6 +208,22 @@ public class RoleAction extends BaseAction {
 		return DISPATCHER;
 	}
 	
+	public String changeStatus(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			this.roleService.changeStatus(role_id);
+			map.put("flag", "success");
+			map.put("message", "变更状态成功，谢谢合作");
+		} catch (RbacException e) {
+			e.printStackTrace();
+			map.put("flag", "error");
+			map.put("message", e.getMessage());
+		}
+		this.jsonResult = map;
+		
+		return JSON;
+	}
+	
 	public String toCheck(){
 		//验证
 		Map<String, Object> map = new HashMap<String, Object>();

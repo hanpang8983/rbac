@@ -4,7 +4,7 @@ import java.util.List;
 
 public class PageBean {
 	/**初始化每页现实5条*/
-	private Integer pageSize = 5;
+	private Integer pageSize = 15;
 	/**初始化当前页为1*/
 	private Integer pageNow = 1;
 	/**总记录数*/

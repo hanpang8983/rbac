@@ -25,5 +25,7 @@ public interface IRoleService {
 	public void add(Role role);
 	public void update(Role role);
 	public void delete(Integer role_id);
+	
+	public void changeStatus(Integer role_id);
 
 }

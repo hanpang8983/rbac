@@ -44,6 +44,7 @@
         <!-- 关于用户操作 -->
         <action name="*UserAction" class="userAction" method="{1}">
             <result name="dispatcher">/jsp/${toJsp}.jsp</result>
+            <result name="redirect" type="redirect">/jsp/${toJsp}.jsp</result>
             <result name="json" type="json">
                 <param name="root">jsonResult</param>
             </result>

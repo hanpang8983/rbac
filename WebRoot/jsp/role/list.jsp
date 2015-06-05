@@ -20,7 +20,8 @@
     <!-- 引入artDailog支持的库 -->
     <link rel="stylesheet" href="<%=path%>/resource/admin/artDialog/css/ui-dialog.css">
     <script src="<%=path%>/resource/admin/artDialog/dist/dialog-plus.js"></script>
-
+    <!--引入滤镜-->
+    <script type="text/javascript" src="<%=path%>/resource/common/grayscale.js"></script>
     <script language="javascript">
         $(function () {
             //导航切换
@@ -28,7 +29,22 @@
                 $(".imglist li.selected").removeClass("selected")
                 $(this).addClass("selected");
             })
+            
+            loadImg();
         })
+        
+        function loadImg(){
+        	//使用滤镜
+            $(".imglist img").each(function(){
+                //获取status
+               // alert($(this).attr("status"));
+                var status = $(this).attr("status");
+                if(status=="2"){
+                    grayscale($(this));
+                }
+
+            })
+        }
     </script>
 
     <!-- 关于功能测试代码 -->
@@ -73,14 +89,33 @@
 
 
         //变更状态方法
-        function toChangeStatus(){
+        function toChangeStatus(obj,role_id){
             var d = dialog({
                 title: '提示',
-                content: '按钮回调函数返回 false 则不许关闭',
+                content: '你确定要变更现在的状态吗？',
                 okValue: '确定',
                 ok: function () {
-                    this.title('提交中…');
-                    return false;
+                    this.title('提交中......');
+                    $.get("sys/changeStatusRoleAction.action",{role_id:role_id},function(data){
+                           if(data.flag=="success"){
+                        	   //window.location.reload();
+                        	   
+                        	  var status = $(obj).parents("li").find("img").attr("status");
+                        	  
+                        	  if(status=="2"){
+                        		  status="1";
+                        		 
+                        	  }else{
+                        		  status="2";
+                        	  }
+                       		  $(obj).parents("li").find("img").attr("status",status)
+                              loadImg();
+                        	  
+                           }else{
+                        	   alert(data.message+"---");
+                        	   return false;
+                           }
+                    })
                 },
                 cancelValue: '取消',
                 cancel: function () {}
@@ -156,16 +191,16 @@
 
 			<ul class="imglist">
 				<c:forEach items="${roleList}" var="role">
-					<li class="selected" title="${role.role_desc}">
+					<li   title="${role.role_desc}">
 						<span>
-						  <img alt="资源加载失败" src="<%=path%>/upload/role/<c:out value="${role.photo}" default="default.png"></c:out>" />
+						  <img alt="资源加载失败" status="${role.flag}"  src="<%=path%>/upload/role/<c:out value="${role.photo}" default="default.png"></c:out>" />
 						</span>
 						<h2>
 							<c:out value="${role.role_name}"></c:out>
 						</h2>
 						<p>
 							<a href="javascript:void(0)" onclick="toUpdateDialog('${role.role_id}')">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
-							<a href="javascript:void(0)" onclick="toChangeStatus()">变更</a>
+							<a href="javascript:void(0)" onclick="toChangeStatus(this,'${role.role_id}')">变更</a>
 						</p>
 						<p>
 							<a href="javascript:void(0)" onclick="toDelete(this,'${role.role_id}')">注销</a>&nbsp;&nbsp;&nbsp;&nbsp;

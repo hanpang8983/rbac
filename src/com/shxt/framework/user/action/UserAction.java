@@ -1,16 +1,21 @@
 package com.shxt.framework.user.action;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.struts2.ServletActionContext;
 
+import com.google.gson.Gson;
 import com.opensymphony.xwork2.ActionContext;
 import com.shxt.base.action.BaseAction;
 import com.shxt.base.dao.PageBean;
@@ -232,6 +237,71 @@ public class UserAction extends BaseAction {
 	}
 	public void setUser_id(Integer userId) {
 		user_id = userId;
+	}
+	
+	//--------------------------测试统计-------------------------------------
+	public String tjTest(){
+		
+		this.toJsp = "user/tj_test";
+		return REDIRECT;
+	}
+	
+	public String tjDataXML() throws IOException{
+		//使用二期的知识完成传递
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		
+		//xml字符串
+		StringBuilder sb = new StringBuilder();
+		sb.append("<chart caption=\"Sales by salesperson\" subcaption=\"\" yaxisname=\"Sales\" numberprefix=\"$\" bgcolor=\"FFFFFF\" useroundedges=\"1\" showborder=\"0\">");
+		sb.append("<set label=\"Rita\" value=\"82000\" />");
+		sb.append("<set label=\"James\" value=\"72000\" />");
+		sb.append("<set label=\"Jenny\" value=\"60000\" />");
+		sb.append("</chart>");
+		
+		out.write(sb.toString());
+		
+		out.flush();
+		out.close();
+		
+		return NONE;
+	}
+	
+	//
+	public String tjDataJSON() throws IOException{
+		//使用二期的知识完成传递
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		
+		Map<String, Object> mapsx = new HashMap<String, Object>();
+		mapsx.put("bgcolor","FFFFFF");
+		mapsx.put("bgalpha", "100");
+		mapsx.put("caption", "用户统计图");
+		mapsx.put("numberSuffix", "人");
+		mapsx.put("is2d", "1");
+		mapsx.put("issliced", "1");
+		mapsx.put("showplotborder", "1");
+		mapsx.put("plotborderthickness", "1");
+		mapsx.put("plotborderalpha", "100");
+		mapsx.put("plotbordercolor", "FFFFFF");
+		mapsx.put("enablesmartlabels", "1");
+		mapsx.put("showBorder", "1");
+		
+		Map<String, Object> jsonMap = new HashMap<String, Object>();
+		jsonMap.put("chart", mapsx);
+		jsonMap.put("data", this.userService.getCharDatas());
+		
+		
+		Gson gson = new Gson();
+		System.out.println(gson.toJson(jsonMap));
+		out.write(gson.toJson(jsonMap));
+		
+		out.flush();
+		out.close();
+		
+		return NONE;
 	}
 
 }

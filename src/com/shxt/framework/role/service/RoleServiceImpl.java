@@ -96,7 +96,7 @@ public class RoleServiceImpl implements IRoleService {
 	}
 
 	public void changeStatus(Integer role_id) {
-		String sql = "update web_sys_role set flag = (case flag	when '1' then '2' when '2' then	'1'	else '1' end) where role_id=?";
+		String sql = "update web_sys_role set role_status = (case role_status	when '1' then '2' when '2' then	'1'	else '1' end) where role_id=?";
 		this.baseDao.updateBySQL(sql, role_id);
 	}
 

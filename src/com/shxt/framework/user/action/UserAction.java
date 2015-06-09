@@ -45,6 +45,9 @@ public class UserAction extends BaseAction {
 	
 	private Integer user_id;
 	
+	private String account;
+	
+	
 	
 	private IUserService userService;
 	public void setUserService(IUserService userService) {
@@ -60,6 +63,9 @@ public class UserAction extends BaseAction {
 		if(pageBean==null){
 			pageBean = new PageBean();
 		}
+		
+		//获取角色列表
+		this.roleList = roleService.getStartRoleList();
 		
 		this.pageBean = userService.find(query,pageBean);
 		
@@ -186,6 +192,20 @@ public class UserAction extends BaseAction {
 		this.jsonResult = map;
 		return JSON;
 	}
+	
+	public String checkAccount(){
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			userService.checkAccount(account);
+			map.put("flag", "success");
+		} catch (RbacException e) {
+			map.put("flag", "error");
+			map.put("message", e.getMessage());
+		}
+		System.out.println(map);
+		this.jsonResult = map;
+		return JSON;
+	}
 
 	public PageBean getPageBean() {
 		return pageBean;
@@ -237,6 +257,14 @@ public class UserAction extends BaseAction {
 	}
 	public void setUser_id(Integer userId) {
 		user_id = userId;
+	}
+	
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
 	}
 	
 	//--------------------------测试统计-------------------------------------

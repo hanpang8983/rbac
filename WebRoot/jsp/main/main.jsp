@@ -128,7 +128,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                        <s:iterator value="parentNodeList" var="parent">
 	                        <dd>
 	                            <div class="title">
-	                                <span><img src="<%=path %>/resource/admin/images/leftico01.png" /></span><s:property value="#parent.menu_name"/>
+	                                <span><img src="<%=path %>/resource/menu/${parent.icon}" /></span><s:property value="#parent.menu_name"/>
 	                            </div>
 	                            <ul class="menuson">
 	                                <!-- 迭代子节点 -->

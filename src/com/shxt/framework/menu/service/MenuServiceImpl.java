@@ -90,7 +90,7 @@ public class MenuServiceImpl implements IMenuService {
 	public void updateParent(Menu menu){
 		//通过主键获取数据
 		Menu old_menu = (Menu) this.baseDao.load(Menu.class, menu.getMenu_id());
-		if(!old_menu.equals(menu.getMenu_name().trim())){
+		if(!old_menu.getMenu_name().equals(menu.getMenu_name().trim())){
 			String hql = "select count(*) from Menu where menu_name=? and parent_id is null and postion='LEFT'";//父节点查询重名
 			Long count = (Long) this.baseDao.query(hql, menu.getMenu_name());
 			if(count>0){

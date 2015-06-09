@@ -67,10 +67,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             return true;
         }
          
-       $(function(){
-    	   
-    	   
-       })
+        function autoWirte(){
+            var id_card = $.trim($("#id_card").val());
+           if(id_card.length==18){
+               //通过身份号码给日期和性别赋值
+                var year = id_card.substr(6, 4);
+                var month = id_card.substr(10, 2);
+                var day = id_card.substr(12, 2);
+
+                var birthday = year+"-"+month+"-"+day;
+
+                document.getElementById("birthday").value=birthday;
+
+                var sex = id_card.substr(16, 1);
+                var str = "";
+                if(parseInt(sex)%2==1){
+                    str = "男";
+                }else{
+                    str="女";
+                }
+                $("#sex").val(str);
+           }
+       }
+         
+       function toSub(){
+           //对数据进行校验
+           
+           //对身份证号码暂时不做验证
+           var id_card = $.trim($("#id_card").val());
+           if(id_card.length==0||id_card.length<18){
+               alert("请输入合法的身份证号码");
+               return false;
+           }
+           
+           var user_name = $.trim($("#user_name").val());
+           if(user_name.length==0){
+               alert("用户姓名，必须要填写呀！");
+               return false;
+           }
+           
+           //可以提交表单了，对于身份证和邮件应该还继续验证
+           userForm.submit();
+           
+           
+       }
 
     </script>
 </head>
@@ -81,7 +121,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <form action="sys/updateUserAction.action" name="userForm" method="post" enctype="multipart/form-data">
         <ul class="mforminfo">
             <li><label>身份证号码</label>
-            <s:textfield name="user.id_card" id="id_card" cssClass="mdfinput" cssStyle="width: 400px;" ></s:textfield>
+            <s:textfield name="user.id_card" id="id_card" cssClass="mdfinput" cssStyle="width: 400px;" maxlength="18" onkeyup="autoWirte()"></s:textfield>
             <li><label>账号</label>
                 <input name="user.account"  type="text" class="mdfinput" style="background: #ccc;" readonly="readonly"  value="${user.account}"/>
             </li>
@@ -111,7 +151,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <li style="width: 350px;height: 170px;">
                 <div id="localImag"><img id="preview" src="<%=path %>/upload/user/<s:property value="user.photo" default="guest.png"/>"/></div>
             </li>
-            <li><label>&nbsp;</label><input  type="submit" class="mbtn" value="确认更新"/></li>
+            <li><label>&nbsp;</label><input  type="button" class="mbtn" value="确认更新" onclick="toSub()"/></li>
         </ul>
         <!-- 隐藏域 -->
                                                              <s:hidden name="user.user_id"></s:hidden>

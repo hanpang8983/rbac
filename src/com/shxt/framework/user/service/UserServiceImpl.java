@@ -5,6 +5,7 @@ import java.util.List;
 import com.shxt.base.dao.BaseDaoImpl;
 import com.shxt.base.dao.IBaseDao;
 import com.shxt.base.dao.PageBean;
+import com.shxt.base.exception.RbacException;
 import com.shxt.base.model.CharDatas;
 import com.shxt.framework.user.model.User;
 import com.shxt.framework.user.query.UserQuery;
@@ -36,6 +37,16 @@ public class UserServiceImpl implements IUserService {
 			if(query.getSex()!=null&&query.getSex().trim().length()>0){
 				hql += " and u.sex='"+query.getSex()+"'";
 			}
+			if(query.getRole_id()!=null&&query.getRole_id().trim().length()>0){
+				if(!query.getRole_id().equals("-1")){
+					hql += " and u.role.role_id="+query.getRole_id();
+				}else{
+					hql += " and u.role is null ";
+				}
+				
+			}
+			
+			
 		}
 		
 		hql += " order by u.user_id desc";
@@ -81,10 +92,21 @@ public class UserServiceImpl implements IUserService {
 		this.baseDao.update(user);
 	}
 	
+	public void checkAccount(String account) {
+		String hql = "select count(user_id) from User where account=?";
+		Long count = (Long) this.baseDao.query(hql, account);
+		if(count>0){
+			throw new RbacException("该账号已经被使用，请重新填写");
+		}
+		
+	}
+	
 	public List<CharDatas> getCharDatas(){
 		String sql = "select IFNULL(r.role_name,'无角色人员') label,count(u.user_id) value  from web_sys_user u LEFT JOIN web_sys_role r on u.fk_role_id=r.role_id group by r.role_name";
 		
 		return (List<CharDatas>) this.baseDao.listSQL(sql, CharDatas.class, false);
 	}
+
+	
 
 }

@@ -22,6 +22,9 @@
     <script src="<%=path%>/resource/admin/artDialog/dist/dialog-plus.js"></script>
     <!--引入滤镜-->
     <script type="text/javascript" src="<%=path%>/resource/common/grayscale.js"></script>
+    <!-- 实现遮盖效果 -->
+    <script type="text/javascript" src="<%=path%>/resource/common/imgHelper.js"></script>
+    
     <script language="javascript">
         $(function () {
             //导航切换
@@ -40,7 +43,10 @@
                // alert($(this).attr("status"));
                 var status = $(this).attr("status");
                 if(status=="2"){
-                    grayscale($(this));
+                   // grayscale($(this));
+                   $(this).protectImage({
+                	   image : "<%=path%>/resource/admin/images/blank1.png"
+                   })
                 }
 
             })
@@ -100,16 +106,22 @@
                            if(data.flag=="success"){
                         	   //window.location.reload();
                         	   
-                        	  var status = $(obj).parents("li").find("img").attr("status");
-                        	  
+                        	  var status = $(obj).parent().parent().find("img").attr("status");
                         	  if(status=="2"){
                         		  status="1";
                         		 
                         	  }else{
                         		  status="2";
                         	  }
-                       		  $(obj).parents("li").find("img").attr("status",status)
-                              loadImg();
+                       		
+                       		 
+                       		 if(status=="2"){
+                       			  $(obj).parent().parent().find("img").attr("status",status);
+                       			  loadImg();
+                       		 }else{
+                       			window.location.href = window.location.href;
+                       		 }
+                       		 
                         	  
                            }else{
                         	   alert(data.message+"---");
@@ -193,7 +205,9 @@
 				<c:forEach items="${roleList}" var="role">
 					<li   title="${role.role_desc}">
 						<span>
-						  <img alt="资源加载失败" status="${role.flag}"  src="<%=path%>/upload/role/<c:out value="${role.photo}" default="default.png"></c:out>" />
+						  <img alt="资源加载失败" status="${role.role_status}"  src="<%=path%>/upload/role/${role.photo}" 
+						      onerror="this.src='<%=path %>/upload/role/default.png'"
+						  />
 						</span>
 						<h2>
 							<c:out value="${role.role_name}"></c:out>

@@ -57,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <form action="sys/loginLoginAction.action" method="post" name="loginForm" onsubmit="return toLogin()">
             <ul>
                 <li><input name="user.account" id="account" type="text" class="loginuser" placeholder="请输入账号"/></li>
-                <li><input name="user.password" id="password" type="text" class="loginpwd" placeholder="请输入密码"/></li>
+                <li><input name="user.password" id="password" type="password" class="loginpwd" placeholder="请输入密码"/></li>
                 <li>
                     <input type="submit" class="loginbtn" value="登录"  />
                     <label style="color: red;font-weight: bold;">

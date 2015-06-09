@@ -12,6 +12,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link href="<%=path %>/resource/admin/css/style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="<%=path %>/resource/admin/js/jquery.js"></script>
+    <!-- 启用个人的工具类 -->
+    <script type="text/javascript" src="<%=path %>/resource/common/utils.js"></script>
 
     <script type="text/javascript">
 
@@ -66,11 +68,72 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
             return true;
         }
+       function autoWirte(){
+    	    var id_card = $.trim($("#id_card").val());
+    	   if(id_card.length==18){
+               //通过身份号码给日期和性别赋值
+                var year = id_card.substr(6, 4);
+                var month = id_card.substr(10, 2);
+                var day = id_card.substr(12, 2);
+
+                var birthday = year+"-"+month+"-"+day;
+
+                document.getElementById("birthday").value=birthday;
+
+                var sex = id_card.substr(16, 1);
+                var str = "";
+                if(parseInt(sex)%2==1){
+                    str = "男";
+                }else{
+                    str="女";
+                }
+                $("#sex").val(str);
+           }
+       }
          
-       $(function(){
+       function toSub(){
+    	   //对数据进行校验
     	   
+    	   //对身份证号码暂时不做验证
+    	   var id_card = $.trim($("#id_card").val());
+    	   if(id_card.length==0||id_card.length<18){
+    		   alert("请输入合法的身份证号码");
+    		   return false;
+    	   }
     	   
-       })
+    	   var account = $.trim($("#account").val());
+    	   
+    	   if(account.length==0){
+    		   alert("账号必须要填写!");
+    		   return false;
+    	   }else{
+    		   //需要对输入的账号进行验证
+    		   if(!utils.isAccount(account)){
+    			   alert("账号必须是字母开头");
+    			   return false;
+    		   }else{
+    			 
+    			   //验证身份号码是否重复
+    			   $.post("sys/checkAccountUserAction.action",{account:account},function(data){
+    				   alert(data.flag)
+    				    if(data.flag=="success"){
+    				    	var user_name = $.trim($("#user_name").val());
+    				    	if(user_name.length==0){
+    				    		alert("用户姓名，必须要填写呀！");
+    				    		return false;
+    				    	}else{
+    				    		//可以提交表单了，对于身份证和邮件应该还继续验证
+    				    		userForm.submit();
+    				    	}
+    				    }else{
+    				    	alert(data.message);
+    				    	return false;
+    				    }
+    			   })
+    		   }
+    	   }
+    	   
+       }
 
     </script>
 </head>
@@ -80,14 +143,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="mformbody">
         <form action="sys/addUserAction.action" name="userForm" method="post" enctype="multipart/form-data">
         <ul class="mforminfo">
-            <li><label>身份证号码</label><input name="user.id_card" id="id_card" type="text" class="mdfinput" style="width: 400px;"/></li>
-            <li><label>账号</label><input name="user.account" id="account" type="text" class="mdfinput" /></li>
+            <li><label>身份证号码</label><input name="user.id_card" id="id_card" type="text" class="mdfinput" style="width: 400px;" maxlength="18" onkeyup="autoWirte()"/></li>
+            <li><label>账号</label><input name="user.account" id="account" type="text" class="mdfinput" maxlength="10"/></li>
             <li><label>姓名</label><input name="user.user_name" id="user_name" type="text" class="mdfinput" /></li>
             <li><label>邮件</label><input name="user.email" id="email" type="text" class="mdfinput" /></li>
             <li><label>联系方式</label><input name="user.telphone" id="telphone" type="text" class="mdfinput" /></li>
             <li><label>出生日期</label><input name="user.birthday" id="birthday" type="text" class="mdfinput" /></li>
             <li><label>性别</label>
-                <select name="user.sex" class="select_show" style="width: 150px;">
+                <select name="user.sex" id="sex" class="select_show" style="width: 150px;">
                     <option value="">请选择性别</option>
                     <option value="男">男</option>
                     <option value="女">女</option>
@@ -108,7 +171,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <li style="width: 350px;height: 170px;">
                 <div id="localImag"><img id="preview" src="<%=path %>/upload/user/guest.png"/></div>
             </li>
-            <li><label>&nbsp;</label><input  type="submit" class="mbtn" value="确认保存"/></li>
+            <li><label>&nbsp;</label><input  type="button" class="mbtn" value="确认保存" onclick="toSub()"/></li>
         </ul>
         </form>
 

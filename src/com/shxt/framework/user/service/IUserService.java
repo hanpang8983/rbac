@@ -15,6 +15,8 @@ public interface IUserService {
 	public void update(User user);
 	public User getUserById(Integer user_id);
 	public void updateStatus(Integer user_id);
+	public void checkAccount(String account);
 	
 	public List<CharDatas> getCharDatas();
+	
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>jquery制作悬停悬停缩放图片遮罩效果 - xw素材网</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css?v=1">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/hover.zoom.js"></script>
+
+    <script>
+        $(function() {
+        
+            $('#blue').hoverZoom(); // Default
+            
+            $('#green').hoverZoom({
+                overlayColor: '#90bd2e',
+                zoom: 50
+            });
+            
+            $('#pink').hoverZoom({
+                overlayColor: '#bd2e75',
+                zoom: 0
+            });
+            
+            /* USAGE
+            
+            $('#pink').hoverZoom({
+                overlay: true, // false to turn off (default true)
+                overlayColor: '#2e9dbd', // overlay background color
+                overlayOpacity: 0.7, // overlay opacity
+                zoom: 25, // amount to zoom (px)
+                speed: 300 // speed of the hover
+            });
+            
+            */
+            
+        }); 
+    </script>
+    
+</head>
+<body>
+    <div id="container">
+
+        <div id="main">
+
+            <div class="block">
+                <a href="#" class="zoom" id="blue"><img src="images/thumbnail-1.jpg" alt="thumbnail" /></a>
+            </div>
+
+            <div class="block">
+                <a href="#" class="zoom" id="green"><img src="images/thumbnail-2.jpg" alt="thumbnail" /></a>
+            </div>
+
+            <div class="block last">
+                <a href="#" class="zoom" id="pink"><img src="images/thumbnail-3.jpg" alt="thumbnail" /></a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>权限管理系统===============================================</title>
+    <title>-----权限管理系统===============================================</title>
   </head>
   
   <body>

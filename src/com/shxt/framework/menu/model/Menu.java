@@ -18,6 +18,14 @@ public class Menu implements Serializable {
 	private String postion = "LEFT";
 	/**默认*/
 	private String target = "rightFrame";
+	/**是否启用脚本模式*/
+	private String is_open = "off";
+	/**脚本代码*/
+	private String js_script;
+	/**方法名*/
+	private String method;
+	
+	
 	public Integer getMenu_id() {
 		return menu_id;
 	}
@@ -59,6 +67,24 @@ public class Menu implements Serializable {
 	}
 	public void setTarget(String target) {
 		this.target = target;
+	}
+	public String getIs_open() {
+		return is_open;
+	}
+	public void setIs_open(String isOpen) {
+		is_open = isOpen;
+	}
+	public String getJs_script() {
+		return js_script;
+	}
+	public void setJs_script(String jsScript) {
+		js_script = jsScript;
+	}
+	public String getMethod() {
+		return method;
+	}
+	public void setMethod(String method) {
+		this.method = method;
 	}
 	
 	

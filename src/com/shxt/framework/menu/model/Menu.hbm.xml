@@ -41,5 +41,23 @@
                 <comment>节点图标</comment>
             </column>
         </property>
+        
+        <property name="is_open" type="string">
+            <column name="is_open" length="20">
+                <comment>是否启用脚本类型，暂时有两个值on和off，默认值为off</comment>
+            </column>
+        </property>
+        
+        <property name="js_script" type="string">
+            <column name="js_script" length="256">
+                <comment>脚本代码，这里输入具体脚本内容</comment>
+            </column>
+        </property>
+        
+        <property name="method" type="string">
+            <column name="method" length="20">
+                <comment>脚本定义的方法名</comment>
+            </column>
+        </property>
     </class>
 </hibernate-mapping>

@@ -32,6 +32,23 @@
 		<servlet-class>com.shxt.base.servlet.InitServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<!-- 
+	 最近seo优化师提了一些需求，要求去除空白区、提取公用代码、减小页面。 
+	 比较急，我就从网上搜了一下，找到了TrimFilter 。
+	 它可以实现去除空白区，代码整理，页面大小缩小到原来的1/2,整理速度不错，用法也很简单。
+	 -->
+	 <!-- html 去除页面空行 -->
+	<filter>
+	   <filter-name>trimFilter</filter-name>
+	   <filter-class>com.cj.trim.trimFilter</filter-class>
+	</filter>
+	
+	<filter-mapping>
+	   <filter-name>trimFilter</filter-name>
+	   <url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	
+	
 	<!-- 登录过滤器 -->
 	<filter>
 		<filter-name>SessionFilter</filter-name>

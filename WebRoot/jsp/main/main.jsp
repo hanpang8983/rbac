@@ -135,7 +135,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                                <s:iterator value="childNodeList" var="child">
 	                                    <!-- 比较父节点ID 关键步骤 -->
 	                                    <s:if test="#parent.menu_id==#child.parent_id">
-	                                          <li><cite></cite><a href="sys/<s:property value="#child.url"/>" target="<s:property value="#child.target"/>"><s:property value="#child.menu_name"/></a><i></i></li>
+	                                          <!-- 情况说明:看是否启用了脚本 -->
+	                                          <s:if test="#child.is_optn=='off'">
+	                                               <li><cite></cite><a href="<s:property value="#child.url"/>" target="<s:property value="#child.target"/>"><s:property value="#child.menu_name"/></a><i></i></li>
+	                                          </s:if>
+	                                          <s:else>
+	                                               <li><cite></cite><a href="javascript:void(0)" onclick="<s:property value="#child.method"/>"><s:property value="#child.menu_name"/></a><i></i></li>                                               
+	                                               <script type="text/javascript">
+	                                                     <s:property value="#child.js_script" escape="false"/>
+	                                               </script>
+	                                          </s:else>
+	                                    
+	                                          
 	                                    </s:if>
 	                                </s:iterator>
 	                                <!-- 激活状态 

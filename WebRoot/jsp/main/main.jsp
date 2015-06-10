@@ -136,7 +136,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                                    <!-- 比较父节点ID 关键步骤 -->
 	                                    <s:if test="#parent.menu_id==#child.parent_id">
 	                                          <!-- 情况说明:看是否启用了脚本 -->
-	                                          <s:if test="#child.is_optn=='off'">
+	                                          <s:if test="#child.is_open=='off'">
 	                                               <li><cite></cite><a href="<s:property value="#child.url"/>" target="<s:property value="#child.target"/>"><s:property value="#child.menu_name"/></a><i></i></li>
 	                                          </s:if>
 	                                          <s:else>

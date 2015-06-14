@@ -1,5 +1,6 @@
 package com.shxt.framework.login.action;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,8 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionContext;
 import com.shxt.base.action.BaseAction;
 import com.shxt.base.utils.PropertiesConfigHelper;
+import com.shxt.framework.log.model.LogonLog;
+import com.shxt.framework.log.service.IRbacLoggerService;
 import com.shxt.framework.menu.model.Menu;
 import com.shxt.framework.menu.service.IMenuService;
 import com.shxt.framework.menu.service.MenuServiceImpl;
@@ -25,7 +28,13 @@ import com.shxt.framework.user.service.UserServiceImpl;
 public class LoginAction extends BaseAction {
 	private User user;
 	private IUserService userService ;
+	private IRbacLoggerService rbacLoggerService;
 	
+	
+	public void setRbacLoggerService(IRbacLoggerService rbacLoggerService) {
+		this.rbacLoggerService = rbacLoggerService;
+	}
+
 	public void setUserService(IUserService userService) {
 		this.userService = userService;
 	}
@@ -46,9 +55,35 @@ public class LoginAction extends BaseAction {
 				}else{
 					//保存到Session范围内
 					Map<String,Object> session = ActionContext.getContext().getSession();
+					
+					//加入登录日志功能
+					if(session.get(PropertiesConfigHelper.getStringValue("RBAC_SESSION"))==null){
+						LogonLog log = new LogonLog();
+						log.setAccount(user.getAccount());
+						log.setUser_name(user.getUser_name());
+						log.setLogin_time(new Date());
+						
+						String ip = ServletActionContext.getRequest().getRemoteAddr();
+						
+						log.setIp(ip);
+						
+						this.rbacLoggerService.addLogonLog(log);
+						
+						//存储该值
+						user.setLogon_id(log.getLogon_id());
+					}
+					
+					
+					
+					
 					session.put(PropertiesConfigHelper.getStringValue("RBAC_SESSION"), user);
 					ServletActionContext.getRequest().getSession().setAttribute(PropertiesConfigHelper.getStringValue("HTTP_SESSION"), user.getUser_id());
 			
+					
+					
+					
+					
+					
 					this.toAction="loadLeftNavMenuAction";
 					return REDIRECTACTION;
 				}

@@ -41,6 +41,9 @@ public class User implements java.io.Serializable{
 	/**多对一关系角色 字段名字交 fk_role_id*/
 	private Role role;
 	
+	/**存储登录日志ID，跟数据库没有关系*/
+	private Integer logon_id;
+	
 	
 	public Integer getUser_id() {
 		return user_id;
@@ -143,6 +146,12 @@ public class User implements java.io.Serializable{
 	}
 	public void setPhoto(String photo) {
 		this.photo = photo;
+	}
+	public Integer getLogon_id() {
+		return logon_id;
+	}
+	public void setLogon_id(Integer logonId) {
+		logon_id = logonId;
 	}
 	
 	

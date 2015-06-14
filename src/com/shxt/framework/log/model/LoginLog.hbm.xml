@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+<hibernate-mapping package="com.shxt.framework.log.model">
+    <class name="LogonLog" table="web_sys_logon_log">
+        <id name="logon_id" column="menu_id" type="integer">
+            <generator class="native"></generator>
+        </id>
+        
+        <property name="ip" type="string">
+            <column name="ip" length="64">
+                <comment>登录的IP地址</comment>
+            </column>
+        </property>
+        
+        <property name="user_name" type="string">
+            <column name="user_name" length="32">
+                <comment>登录人的姓名</comment>
+            </column>
+        </property>
+        
+        <property name="account" type="string">
+            <column name="account" length="16">
+                <comment>登录人的账号</comment>
+            </column>
+        </property>
+        
+        <property name="login_time" type="timestamp">
+            <column name="login_time">
+                <comment>登录的日期时间</comment>
+            </column>
+        </property>
+        
+       
+    </class>
+</hibernate-mapping>

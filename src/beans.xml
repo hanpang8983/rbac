@@ -128,6 +128,12 @@
 	<!-- 登录配置 -->
 	<bean id="loginAction" class="com.shxt.framework.login.action.LoginAction"
 		scope="prototype">
-		<property name="userService" ref="userServiceImpl"></property>
+		<property name="userService" ref="userServiceImpl"/>
+		<property name="rbacLoggerService" ref="rbacLoggerServiceImpl"/>
+	</bean>
+	
+	<!-- 关于的Service配置 -->
+	<bean id="rbacLoggerServiceImpl" class="com.shxt.framework.log.service.RbacLoggerServiceImpl">
+	   <property name="baseDao" ref="baseDaoImpl"></property>
 	</bean>
 </beans>

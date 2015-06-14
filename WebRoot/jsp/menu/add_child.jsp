@@ -46,6 +46,16 @@
 				}
 			});
 		}
+		
+		function changeStatus(){
+			if($("#is_open").val()=="off"){
+				$(".js").hide();
+				$(".url").show();
+			}else{
+				$(".js").show();
+				$(".url").hide();
+			}
+		}
 </script>
 	</head>
 
@@ -73,13 +83,33 @@
 						></s:select>
 						<i>必须要选择哟!</i>
 					</li>
-					<li>
+					<li class="url">
                         <label>
                                                     访问路径
                         </label>
                         <input name="menu.url" id="url" type="text"
                             class="dfinput" />
                     </li>
+                    <li>
+                        <label>
+                                                    启用脚本
+                        </label>
+                        <select name="menu.is_open" id="is_open" class="select_show" onchange="changeStatus()">
+			                 <option value="off">不启用</option>
+			                 <option value="on">启用</option>
+			            </select>
+			            </li>
+                    </li>
+                    <li class="js" style="display: none;">
+                        <label>
+                                                    脚本方法名
+                        </label>
+                        <input name="menu.method" id="method" type="text"
+                            class="dfinput" />
+                    </li>
+                    <li class="js"style="display: none;">
+                        <label>脚本内容</label>
+                        <textarea name="menu.js_script" id="js_script" cols="" rows="" class="textinput"></textarea></li>
 					<li>
 						<label>
 							&nbsp;

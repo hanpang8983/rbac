@@ -17,6 +17,12 @@ public class MenuDTO {
 	private String postion = "LEFT";
 	/**默认*/
 	private String target = "rightFrame";
+	/**是否启用脚本模式*/
+	private String is_open = "off";
+	/**脚本代码*/
+	private String js_script;
+	/**方法名*/
+	private String method;
 	
 	private List<MenuDTO> menuList;
 
@@ -82,5 +88,29 @@ public class MenuDTO {
 
 	public void setMenuList(List<MenuDTO> menuList) {
 		this.menuList = menuList;
+	}
+
+	public String getIs_open() {
+		return is_open;
+	}
+
+	public void setIs_open(String isOpen) {
+		is_open = isOpen;
+	}
+
+	public String getJs_script() {
+		return js_script;
+	}
+
+	public void setJs_script(String jsScript) {
+		js_script = jsScript;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
 	}
 }

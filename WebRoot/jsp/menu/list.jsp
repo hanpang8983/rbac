@@ -92,7 +92,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             //成功需要注意jquery的版本必须是1.7+以上
             var d = top.dialog({
                 width:700,
-                height:250,
+                height:450,
                 title: '新建子节点页面',
                 url:'sys/toAddChildMenuAction.action',//可以是一个访问路径Action|Servlet等或者jsp页面资源
                 onclose: function () {

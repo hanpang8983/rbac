@@ -56,5 +56,6 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/struts2-spring-plugin-2.3.20.1.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/slf4j-log4j12-1.6.6.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/slf4j-nop-1.6.6.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/trimflt.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>
